@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "vite --mode dev --port 5001 --strictPort",
+    "dev:fed": "vite build --watch --mode dev && vite preview --port 5001 --strictPort",
+    "build": "tsc && vite build",
+    "preview": "vite preview --port 5001 --strictPort"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.17",
@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@originjs/vite-plugin-federation": "^1.4.1",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",

@@ -10,11 +10,15 @@ export default defineConfig({
     tailwindcss(),
     federation({
       name: "shell",
+      filename: "remoteEntry.js",
       remotes: {
         user_card: "http://localhost:5001/assets/remoteEntry.js",
         content_bar: "http://localhost:5002/assets/remoteEntry.js",
       },
-      shared: ["react", "react-dom"],
+      exposes: {
+        "./dashboard-store": "./src/store/dashboard-store.ts",
+      },
+      shared: ["react", "react-dom", "zustand"],
     }),
   ],
   build: {

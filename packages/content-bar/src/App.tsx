@@ -1,7 +1,9 @@
+import ContentBar from "./components/ContentBar";
+
 function App() {
   return (
     <div>
-      <h1>Content Bar</h1>
+      <ContentBar />
     </div>
   );
 }

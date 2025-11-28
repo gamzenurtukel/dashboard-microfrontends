@@ -6,7 +6,7 @@ const ContentBar = lazy(() => import("content_bar/ContentBar"));
 
 function App() {
   return (
-    <main className="min-h-screen bg-gray-modern-50 dark:bg-gray-modern-800/80 text-white">
+    <main className="min-h-screen bg-slate-900/60 text-white">
       <Header />
       <div className="flex flex-col gap-4 px-4 py-6 md:flex-row">
         {/* user card */}

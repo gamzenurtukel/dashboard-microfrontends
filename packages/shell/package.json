@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --mode dev --port 5000 --strictPort",
     "dev:fed": "vite build --watch --mode dev && vite preview --port 5000 --strictPort",
+    "dev:all": "concurrently \"yarn dev:fed\" \"yarn --cwd ../content-bar dev:fed\" \"yarn --cwd ../user-card dev:fed\"",
     "build": "tsc && vite build",
     "preview": "vite preview --port 5000 --strictPort"
   },
@@ -13,7 +14,8 @@
     "@tailwindcss/vite": "^4.1.17",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "tailwindcss": "^4.1.17"
+    "tailwindcss": "^4.1.17",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -22,6 +24,7 @@
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "concurrently": "^9.2.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",

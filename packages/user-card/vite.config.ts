@@ -11,6 +11,9 @@ export default defineConfig({
     federation({
       name: "user_card",
       filename: "remoteEntry.js",
+      remotes: {
+        shell: "http://localhost:5000/assets/remoteEntry.js",
+      },
       exposes: {
         "./UserCard": "./src/remote-entry.tsx",
       },

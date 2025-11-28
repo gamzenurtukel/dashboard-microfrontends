@@ -1,4 +1,5 @@
 import React from "react";
+import { useDashboardStore } from "shell/dashboard-store";
 
 type Item = {
   id: number;
@@ -7,56 +8,84 @@ type Item = {
   description: string;
 };
 
-const MOCK_ITEMS: Item[] = [
-  {
-    id: 1,
-    type: "notification",
-    title: "Yeni bildirim",
-    description: "İlanına yeni bir yorum yapıldı.",
-  },
-  {
-    id: 2,
-    type: "activity",
-    title: "Son aktivite",
-    description: "Profil sayfan 12 kez görüntülendi.",
-  },
-  {
-    id: 3,
-    type: "notification",
-    title: "Mesaj",
-    description: "Yeni bir mesajın var.",
-  },
-];
+type ItemFilter = "all" | "notification" | "activity";
+
+function filterItems(items: Item[], filter: ItemFilter): Item[] {
+  if (filter === "all") return items;
+  return items.filter((item) => item.type === filter);
+}
+
+function ItemCard({ item }: { item: Item }) {
+  return (
+    <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-3 hover:border-slate-500 transition-colors cursor-pointer flex justify-between items-center">
+      <div>
+        <h3 className="text-xs font-semibold mb-1 text-white">{item.title}</h3>
+        <p className="text-[11px] text-slate-300">{item.description}</p>
+      </div>
+      <span className="mt-2 inline-flex text-[11px] px-2 py-0.5 rounded-full border border-slate-700 text-slate-400">
+        {item.type === "notification" ? "Bildirim" : "Aktivite"}
+      </span>
+    </div>
+  );
+}
 
 const ContentBar: React.FC = () => {
-  const visibleItems = MOCK_ITEMS;
+  const { items, filter, setFilter } = useDashboardStore();
+
+  const visibleItems = filterItems(items, filter);
 
   const message = "Tüm bildirimler görüntülendi.";
 
-  return (
-    <div className="space-y-3">
-      {message && (
-        <div className="rounded-lg bg-shadow-blue px-3 py-2 text-xs text-default-blue">
-          {message}
-        </div>
-      )}
+  const filterButtonClasses = (active: boolean) =>
+    `px-3 py-1 rounded-full text-[11px] border transition-colors
+     ${
+       active
+         ? "border-blue-400 bg-blue-500/10 text-blue-300"
+         : "border-slate-700 text-slate-300 hover:border-slate-400"
+     }`;
 
-      <div className="grid gap-3 md:grid-cols-2">
-        {visibleItems.map((item) => (
-          <article
-            key={item.id}
-            className="rounded-md bg-gray-modern-100 dark:bg-gray-modern-800 p-3 text-sm shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+  return (
+    <section className="border border-slate-800 bg-slate-950/60 rounded-2xl p-4 space-y-3">
+      {/* header and filter buttons */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-semibold">Content</h2>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => setFilter("all")}
+            className={filterButtonClasses(filter === "all")}
           >
-            <h3 className="font-semibold text-gray-moder-900 dark:text-gray-modern-50">
-              {item.title}
-            </h3>
-            <p className="mt-1 text-xs text-gray-modern-500">
-              {item.description}
-            </p>
-          </article>
-        ))}
+            Tümü
+          </button>
+          <button
+            type="button"
+            onClick={() => setFilter("notification")}
+            className={filterButtonClasses(filter === "notification")}
+          >
+            Bildirimler
+          </button>
+          <button
+            type="button"
+            onClick={() => setFilter("activity")}
+            className={filterButtonClasses(filter === "activity")}
+          >
+            Aktiviteler
+          </button>
+        </div>
       </div>
-    </div>
+
+      {/* list */}
+      <div className="grid gap-2">
+        {visibleItems.map((item) => (
+          <ItemCard key={item.id} item={item} />
+        ))}
+        {visibleItems.length === 0 && (
+          <p className="text-sm text-slate-400">
+            Bu filtre için sonuç bulunamadı.
+          </p>
+        )}
+      </div>
+    </section>
   );
 };
 

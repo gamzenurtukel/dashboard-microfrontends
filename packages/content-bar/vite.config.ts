@@ -11,6 +11,9 @@ export default defineConfig({
     federation({
       name: "content_bar",
       filename: "remoteEntry.js",
+      remotes: {
+        shell: "http://localhost:5000/assets/remoteEntry.js",
+      },
       exposes: {
         "./ContentBar": "./src/remote-entry.tsx",
       },

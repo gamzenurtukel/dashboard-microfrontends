@@ -1,10 +1,13 @@
 import { useMemo } from "react";
 import { useDashboardStore } from "shell/dashboard-store";
+import { useModalStore } from "shell/modal-store";
 
 type ItemFilter = "notification" | "activity";
 
 export default function UserCard() {
   const { items, filter, setFilter } = useDashboardStore();
+  const { onOpen } = useModalStore();
+
   const currentFilter = filter;
 
   const counts = useMemo(() => {
@@ -34,35 +37,46 @@ export default function UserCard() {
 
   return (
     <div className="border border-slate-800 bg-slate-950/60 rounded-2xl p-4 space-y-3">
-      {/* user info */}
-      <div className="flex items-center gap-3">
-        <div className="h-10 w-10 rounded-full bg-slate-700 flex items-center justify-center text-sm font-semibold">
-          JD
-        </div>
+      <div className="flex items-start justify-between">
         <div>
-          <div className="text-sm font-semibold">Jane Doe</div>
-          <div className="text-xs text-slate-400">jane.doe@example.com</div>
+          {/* user info */}
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-slate-700 flex items-center justify-center text-sm font-semibold">
+              JD
+            </div>
+            <div>
+              <div className="text-sm font-semibold">Jane Doe</div>
+              <div className="text-xs text-slate-400">jane.doe@example.com</div>
+            </div>
+          </div>
+
+          {/* Badge’ler */}
+          <div className="flex gap-2 mt-2">
+            <button
+              type="button"
+              onClick={handleNotificationClick}
+              className={badgeClasses(currentFilter === "notification")}
+            >
+              Bildirimler
+              <span className={countPill}>{counts.notification}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleActivityClick}
+              className={badgeClasses(currentFilter === "activity")}
+            >
+              Aktiviteler
+              <span className={countPill}>{counts.activity}</span>
+            </button>
+          </div>
         </div>
-      </div>
-
-      {/* Badge’ler */}
-      <div className="flex gap-2 mt-2">
         <button
-          type="button"
-          onClick={handleNotificationClick}
-          className={badgeClasses(currentFilter === "notification")}
+          className="inline-flex items-center justify-center rounded-full px-2 py-1 text-[11px] border cursor-pointer
+           border-slate-700 text-slate-300 hover:border-slate-400"
+          onClick={onOpen}
         >
-          Bildirimler
-          <span className={countPill}>{counts.notification}</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={handleActivityClick}
-          className={badgeClasses(currentFilter === "activity")}
-        >
-          Aktiviteler
-          <span className={countPill}>{counts.activity}</span>
+          Modal Aç
         </button>
       </div>
     </div>

@@ -17,6 +17,7 @@ export default defineConfig({
       },
       exposes: {
         "./dashboard-store": "./src/store/dashboard-store.ts",
+        "./modal-store": "./src/store/modal-store.ts",
       },
       shared: ["react", "react-dom", "zustand"],
     }),

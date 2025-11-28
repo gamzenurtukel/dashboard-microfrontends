@@ -1,10 +1,13 @@
 import Header from "./components/Header";
 import { Suspense, lazy } from "react";
+import Modal from "./components/Modal";
+import { useModalStore } from "./store/modal-store";
 
 const UserCard = lazy(() => import("user_card/UserCard"));
 const ContentBar = lazy(() => import("content_bar/ContentBar"));
 
 function App() {
+  const { isOpen, onClose } = useModalStore();
   return (
     <main className="min-h-screen bg-slate-900/60 text-white">
       <Header />
@@ -22,6 +25,7 @@ function App() {
           </Suspense>
         </section>
       </div>
+      <Modal isOpen={isOpen} onClose={onClose} title="Örnek Modal" />
     </main>
   );
 }
